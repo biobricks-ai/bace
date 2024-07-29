@@ -1,39 +1,24 @@
 import pandas as pd
-import os
 import shutil
+from pathlib import Path
 
-raw_dir = "raw"
-brick_dir = "brick"
-pdb_dir = os.path.join(brick_dir, "pdb")
-os.makedirs(brick_dir, exist_ok=True)
-os.makedirs(pdb_dir, exist_ok=True)
+raw_dir = Path("raw")
+brick_dir = Path("brick")
+pdb_dir = brick_dir / "pdb"
 
-for root, dirs, files in os.walk(raw_dir):
-    for file in files:
-        # Skip files in the __MACOSX folder
-        if '__MACOSX' in root:
-            continue
+brick_dir.mkdir(parents=True, exist_ok=True)
+pdb_dir.mkdir(parents=True, exist_ok=True)
 
-        if file.endswith('.csv'):
-            csv_file_path = os.path.join(root, file)
-            parquet_file_path = os.path.join(brick_dir, f"{os.path.splitext(file)[0]}.parquet")
+# Convert CSV files to Parquet
+for csv_file in raw_dir.glob('**/*.csv'):
+    df = pd.read_csv(csv_file, encoding='ISO-8859-1')  # Assuming the files are encoded in ISO-8859-1
+    if not df.empty:
+        parquet_file_path = brick_dir / f"{csv_file.stem}.parquet"
+        df.to_parquet(parquet_file_path, engine='pyarrow')
+        print(f"Parquet file created for {csv_file.name}")
 
-            # Try reading the CSV file with different encodings
-            df = None
-            for encoding in ['utf-8', 'ISO-8859-1', 'cp1252']:
-                try:
-                    df = pd.read_csv(csv_file_path, encoding=encoding)
-                    break  # Exit the loop if read successfully
-                except UnicodeDecodeError:
-                    continue
+# Copy PDB files
+for pdb_file in raw_dir.glob('**/*.pdb'):
+    shutil.copy(pdb_file, pdb_dir)
+    print(f"Copied PDB file {pdb_file.name} to {pdb_dir}")
 
-            if df is not None and not df.empty:
-                # Write to Parquet file
-                df.to_parquet(parquet_file_path, engine='pyarrow')
-                print(f"Parquet file created for {file}")
-            else:
-                print(f"Skipping {file} as it contains no data.")
-        elif file.endswith('.pdb'):
-            pdb_file_path = os.path.join(root, file)
-            shutil.copy(pdb_file_path, pdb_dir)
-            print(f"Copied PDB file {file} to {pdb_dir}")
