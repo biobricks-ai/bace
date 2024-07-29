@@ -1,35 +1,6 @@
-# How to build bricks
 
-1. Create a brick named `{newbrick}` from this template
-```
-gh repo create biobricks-ai/{newbrick} -p biobricks-ai/brick-template --public
-gh repo clone biobricks-ai/{newbrick}
-cd newbrick
-```
+Drug Design Data Resource Grand Challenge 4 Dataset: BACE1
 
-2. Edit stages according to your needs:
-    Recommended scripts:
-    - ``01_download.sh``
-    - ``02_unzip.sh``
-    - ``03_build.sh`` calling a function to process individual files like ``csv2parquet.R`` or ``csv2parquet.py``
+Beta-Secretase 1 (BACE) is a transmembrane aspartic-acid protease human protein encoded by the BACE1 gene. BACE is essential for the generation of beta-amyloid peptide in neural tissue, a component of amyloid plaques widely believed to be critical in the development of Alzheimer's, rendering BACE an attractive therapeutic target for this devastating disease. The BACE dataset provided herein comprises small molecule inhibitors across a three order of magnitude (nM to μM) range of IC50s along with previously undisclosed crystallographic structures. Specifically, we provide 154 BACE inhibitors for affinity, 20 for pose, and 34 for free energy prediction. This dataset was kindly provided by Novartis.
 
-3. Replace stages in dvc.yaml with your new stages
-    
-4. Build your brick
-```
-dvc repro # runs new stages
-```
-
-5. Push the data to biobricks.ai
-```
-dvc push -r s3.biobricks.ai 
-```
-
-6. Commit the brick
-```
-git add -A && git commit -m "some message"
-git push
-```
-
-7. Monitor the bricktools github action
-
+https://drugdesigndata.org/about/datasets/2027
