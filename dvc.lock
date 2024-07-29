@@ -5,8 +5,8 @@ stages:
     deps:
     - path: stages/01_download.py
       hash: md5
-      md5: bfe7fa572916711d216ca154994af7b3
-      size: 486
+      md5: 0001f9f62a41dd4892589aca62fe19f3
+      size: 496
     outs:
     - path: download
       hash: md5
@@ -41,11 +41,11 @@ stages:
       nfiles: 52
     - path: stages/03_build.py
       hash: md5
-      md5: fdfdd036c45edfb4d196ad571fef35dd
-      size: 1414
+      md5: a2867ff01e14fc27f6c844e767f521b6
+      size: 762
     outs:
     - path: brick
       hash: md5
-      md5: 1e195f77e396733338bf17498f1ac648.dir
-      size: 9243082
-      nfiles: 22
+      md5: 4b5cd088fc946566cbaed3b97634f456.dir
+      size: 9247342
+      nfiles: 42

@@ -12,4 +12,4 @@ if response.status_code == 200:
         f.write(response.content)
     print("Download successful")
 else:
-    print(f"Failed to download file. Status code: {response.status_code}")
+    raise Exception(f"Failed to download file. Status code: {response.status_code}")
